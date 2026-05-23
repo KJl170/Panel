@@ -256,7 +256,7 @@ TpButton.MouseButton1Down:Connect(function()
 		local plrHumR = player.Character:FindFirstChild("HumanoidRootPart")
 		
 		if plrHumP and plrHumR then
-			plrHumR:PivotTo(plrHumP:GetPivot() * CFrame.new(0, 2, 0))
+			plrHumR.CFrame = plrHumP.CFrame * CFrame.new(0, 2, 0)
 			boolVal.Text = tostring(true)
 		end
 	else
