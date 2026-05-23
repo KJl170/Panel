@@ -1,1 +1,1 @@
-I created this script for testing some things in FISCH ROBLOX. For now it has testing things but ill update them later
+I created this script to test some things in Fisch Roblox. For now it only contains testing features but Ill update it later. This is my first script that isnt made for Roblox Studio
