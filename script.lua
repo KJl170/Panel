@@ -248,7 +248,7 @@ TpButton.MouseButton1Down:Connect(function()
 	if isClicked4 then return end
 	isClicked4 = true
 	
-	local targetplr = "test"
+	local targetplr = "ioooooqqerer"
 	local plrWorkspace = workspace:FindFirstChild(targetplr)
 	
 	if targetplr and plrWorkspace and targetplr ~= player.Name then
