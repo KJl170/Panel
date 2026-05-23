@@ -1,7 +1,7 @@
 local player = game.Players.LocalPlayer
 local playerGui = player.PlayerGui
 
-local Vr = 1.2
+local Vr = 1.25
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "FischPanel"
@@ -68,17 +68,6 @@ Title.Size = UDim2.new(0.4,0, 0.3, 0)
 Title.LayoutOrder = 11
 Title.Parent = MainFrame
 
-local SovpadenuaText = Instance.new("TextLabel")
-SovpadenuaText.Name = "SovpadenuaText"
-SovpadenuaText.Text = "..."
-SovpadenuaText.BackgroundColor3 = Color3.new(0.0941176, 0.0941176, 0.0941176)
-SovpadenuaText.TextColor3 = Color3.new(1,1,1)
-SovpadenuaText.FontFace = Font.fromName("Montserrat", Enum.FontWeight.Bold)
-SovpadenuaText.TextScaled = true
-SovpadenuaText.Size = UDim2.new(0.25,0, 0.3, 0)
-SovpadenuaText.LayoutOrder = 4
-SovpadenuaText.Parent = MainFrame
-
 local SovpadenuaText2 = Instance.new("TextLabel")
 SovpadenuaText2.Name = "SovpadenuaText2"
 SovpadenuaText2.Text = "..."
@@ -102,9 +91,9 @@ HowMuchNPCText1.LayoutOrder = 3
 HowMuchNPCText1.Parent = MainFrame
 
 local button = Instance.new("TextButton")
-button.Name = "FindButton"
+button.Name = "PosButton"
 button.Size = UDim2.new(0.3,0, 0.3, 0)
-button.Text = "Find"
+button.Text = "Pos"
 button.TextColor3 = Color3.new(1, 1, 1)
 button.FontFace = Font.fromName("Montserrat", Enum.FontWeight.Bold)
 button.TextScaled = true
@@ -134,6 +123,28 @@ GuiMarket.BackgroundColor3 = Color3.new(0.0941176, 0.0941176, 0.0941176)
 GuiMarket.LayoutOrder = 7
 GuiMarket.Parent = MainFrame
 
+local SpectatePlr = Instance.new("TextButton")
+SpectatePlr.Name = "SpectatePlr"
+SpectatePlr.Size = UDim2.new(0.3,0, 0.3, 0)
+SpectatePlr.Text = "Spec"
+SpectatePlr.TextColor3 = Color3.new(1, 1, 1)
+SpectatePlr.FontFace = Font.fromName("Montserrat", Enum.FontWeight.Bold)
+SpectatePlr.TextScaled = true
+SpectatePlr.BackgroundColor3 = Color3.new(0.0941176, 0.0941176, 0.0941176)
+SpectatePlr.LayoutOrder = 8
+SpectatePlr.Parent = MainFrame
+
+local TpButton = Instance.new("TextButton")
+TpButton.Name = "tpPlr"
+TpButton.Size = UDim2.new(0.3,0, 0.3, 0)
+TpButton.Text = "T"
+TpButton.TextColor3 = Color3.new(1, 1, 1)
+TpButton.FontFace = Font.fromName("Montserrat", Enum.FontWeight.Bold)
+TpButton.TextScaled = true
+TpButton.BackgroundColor3 = Color3.new(0.0941176, 0.0941176, 0.0941176)
+TpButton.LayoutOrder = 9
+TpButton.Parent = MainFrame
+
 local UIstrokeTitle = Instance.new("UIStroke")
 UIstrokeTitle.Thickness = 2
 UIstrokeTitle.Parent = Title
@@ -148,79 +159,124 @@ UICornerForFrame.CornerRadius = UDim.new(0, 3)
 UICornerForFrame.Parent = MainFrame
 
 for i, objfrm in pairs(MainFrame:GetChildren()) do
-  if objfrm:IsA("TextButton") or objfrm:IsA("TextLabel") or objfrm:IsA("TextBox") then
-    local ObjCorner = Instance.new("UICorner")
-    ObjCorner.CornerRadius = UDim.new(0, 3)
-    ObjCorner.Parent = objfrm
+	if objfrm:IsA("TextButton") or objfrm:IsA("TextLabel") or objfrm:IsA("TextBox") then
+		local ObjCorner = Instance.new("UICorner")
+		ObjCorner.CornerRadius = UDim.new(0, 3)
+		ObjCorner.Parent = objfrm
 
-    local ObjStroke = Instance.new("UIStroke")
-    ObjStroke.Thickness = 2
-    ObjStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
-    ObjStroke.Parent = objfrm
-    
-    local ObjStrokeCorner = Instance.new("UIStroke")
-    ObjStrokeCorner.Thickness = 2
-    ObjStrokeCorner.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    ObjStrokeCorner.Color = Color3.new(0.211765, 0.211765, 0.211765)
-    ObjStrokeCorner.Parent = objfrm
-  end
+		local ObjStroke = Instance.new("UIStroke")
+		ObjStroke.Thickness = 2
+		ObjStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual
+		ObjStroke.Parent = objfrm
+
+		local ObjStrokeCorner = Instance.new("UIStroke")
+		ObjStrokeCorner.Thickness = 2
+		ObjStrokeCorner.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+		ObjStrokeCorner.Color = Color3.new(0.211765, 0.211765, 0.211765)
+		ObjStrokeCorner.Parent = objfrm
+	end
 end
 
 
 local isClicked = false
 local isClicked2 = false
+local isClicked3 = false
+local isClicked4 = false
+
+local IsSpec = false
 
 button.MouseButton1Down:Connect(function()
-  if isClicked then return end
-  isClicked = true
+	if isClicked then return end
+	isClicked = true
+	
+	local targetplr = "ioooooqqerer"
+	local plrWorkspace = workspace:FindFirstChild(targetplr)
+	
+	if plrWorkspace then
+		local humPart = plrWorkspace:FindFirstChild("HumanoidRootPart")
+		
+		if humPart then
+			local position = humPart:GetPivot().Position
+			local x, y, z = position.X, position.Y, position.Z
+			CoordinatesText.Text = string.format("X: %.2f, Y: %.2f, Z: %.2f", x, y, z)
+			boolVal.Text = tostring(true)
+		else
+			boolVal.Text = tostring(false)
+		end
+	else
+		boolVal.Text = tostring(false)
+	end
+	task.wait(.5)
+	isClicked = false
+end)
 
-  local modelsFound = 0
-  local found = false
+SpectatePlr.MouseButton1Down:Connect(function()
+	if isClicked3 then return end
+	isClicked3 = true
+	
+	local targetplr = "ioooooqqerer"
+	local plrWorkspace = workspace:FindFirstChild(targetplr)
 
-  for i, v in pairs(workspace:GetDescendants()) do
-    if v:IsA("Model") and v.Name == "Black Market" then
-      found = true
-      modelsFound += 1
+	local Cam = workspace.CurrentCamera
 
-      task.spawn(function()
-        for i, t in pairs(v:GetDescendants()) do
-          if t:IsA("Highlight") then
-            t:Destroy()
-          end
-        end
-      end)
+	if Cam and plrWorkspace and not IsSpec and targetplr ~= player.Name then
+		local humanoid = plrWorkspace:FindFirstChildOfClass("Humanoid")
 
-      for i, g in pairs(v:GetDescendants()) do
-        if g:IsA("Part") or g:IsA("MeshPart") or g:IsA("UnionOperation") then
-          local highlight = Instance.new("Highlight")
-          highlight.Parent = g
-        end
-      end
+		if humanoid then
+			Cam.CameraSubject = humanoid
+			IsSpec = true
+			boolVal.Text = tostring(true)
+		end
 
-      local position = v:GetPivot().Position
-      local x, y, z = position.X, position.Y, position.Z
+	elseif IsSpec then
+		IsSpec = false
 
-      CoordinatesText.Text = string.format("X: %.2f, Y: %.2f, Z: %.2f", x, y, z)
-      SovpadenuaText.Text = tostring(modelsFound)
-    end
-  end
+		local hum = player.Character:FindFirstChildOfClass("Humanoid")
 
-  if not found then CoordinatesText.Text = tostring(0) SovpadenuaText.Text = tostring(modelsFound) boolVal.Text = tostring(false) end
+		if hum then
+			Cam.CameraSubject = hum
+			boolVal.Text = tostring(true)
+		end
+	else
+		boolVal.Text = tostring(false)
+	end
 
-  isClicked = false
+	isClicked3 = false
+end)
+
+TpButton.MouseButton1Down:Connect(function()
+	if isClicked4 then return end
+	isClicked4 = true
+	
+	local targetplr = "test"
+	local plrWorkspace = workspace:FindFirstChild(targetplr)
+	
+	if targetplr and plrWorkspace and targetplr ~= player.Name then
+		local plrHumP = plrWorkspace:FindFirstChild("HumanoidRootPart")
+		local plrHumR = player.Character:FindFirstChild("HumanoidRootPart")
+		
+		if plrHumP and plrHumR then
+			plrHumR:PivotTo(plrHumP:GetPivot() * CFrame.new(0, 2, 0))
+			boolVal.Text = tostring(true)
+		end
+	else
+		boolVal.Text = tostring(false)
+	end
+	task.wait(.5)
+	isClicked4 = false
 end)
 
 local AvNames = {
-  ["Black Market"] = true,
-  ["Market"] = true,
-  ["Black"] = true,
-  ["BlackMarket"] = true
+	["Black Market"] = true,
+	["Market"] = true,
+	["Black"] = true,
+	["BlackMarket"] = true
 }
 
 local AvNPC = {
-  ["Diver"] = true,
-  ["Lantern Figure"] = true,
-  ["Watchman"] = true
+	["Diver"] = true,
+	["Lantern Figure"] = true,
+	["Watchman"] = true
 }
 
 local GuisFound = 0
@@ -230,64 +286,64 @@ local NpcsFound = 0
 local isNpFound = false
 
 GuiMarket.MouseButton1Down:Connect(function()
-  if isClicked2 then return end
-  isClicked2 = true
+	if isClicked2 then return end
+	isClicked2 = true
 
-  GuisFound = 0
-  found = false
+	GuisFound = 0
+	found = false
 
-  for _, v in pairs(playerGui:GetDescendants()) do
-    local isGuiObject =
-      v:IsA("Frame")
-      or v:IsA("TextButton")
-      or v:IsA("TextLabel")
-      or v:IsA("TextBox")
-      or v:IsA("ImageLabel")
-      or v:IsA("ImageButton")
+	for _, v in pairs(playerGui:GetDescendants()) do
+		local isGuiObject =
+			v:IsA("Frame")
+			or v:IsA("TextButton")
+			or v:IsA("TextLabel")
+			or v:IsA("TextBox")
+			or v:IsA("ImageLabel")
+			or v:IsA("ImageButton")
 
-    if isGuiObject then
-      if AvNames[v.Name] or string.find(v.Name, "Black") then
-        v.Visible = true
+		if isGuiObject then
+			if AvNames[v.Name] or string.find(v.Name, "Black") then
+				v.Visible = true
 
-        GuisFound += 1
-        found = true
-      end
-    end
-  end
+				GuisFound += 1
+				found = true
+			end
+		end
+	end
 
-  boolVal.Text = tostring(found)
-  SovpadenuaText2.Text = tostring(GuisFound)
+	boolVal.Text = tostring(found)
+	SovpadenuaText2.Text = tostring(GuisFound)
 
-  isClicked2 = false
+	isClicked2 = false
 end)
 
 NpcsButton.MouseButton1Down:Connect(function()
-  if isNpFound then return end
-  local found = false
+	if isNpFound then return end
+	local found = false
 
-  for _, v in pairs(workspace:GetDescendants()) do
-    if AvNPC[v.Name] and not isNpFound then
-      found = true
-      NpcsFound += 1
-      if not v:FindFirstChildOfClass("Highlight") then
-        local highlight = Instance.new("Highlight")
-        highlight.Parent = v
-      end
-    end
-  end
+	for _, v in pairs(workspace:GetDescendants()) do
+		if AvNPC[v.Name] and not isNpFound then
+			found = true
+			NpcsFound += 1
+			if not v:FindFirstChildOfClass("Highlight") then
+				local highlight = Instance.new("Highlight")
+				highlight.Parent = v
+			end
+		end
+	end
 
-  for _, q in pairs(game.ReplicatedStorage:GetDescendants()) do
-    if AvNPC[q.Name] and not isNpFound then
-      found = true
-      NpcsFound += 1
-      local clone = q:Clone()
-      clone.Parent = workspace
+	for _, q in pairs(game.ReplicatedStorage:GetDescendants()) do
+		if AvNPC[q.Name] and not isNpFound then
+			found = true
+			NpcsFound += 1
+			local clone = q:Clone()
+			clone.Parent = workspace
 
-      local highlight = Instance.new("Highlight")
-      highlight.Parent = clone
-    end
-  end
-  isNpFound = true
-  HowMuchNPCText1.Text = tostring(NpcsFound)
-  boolVal.Text = tostring(found)
+			local highlight = Instance.new("Highlight")
+			highlight.Parent = clone
+		end
+	end
+	isNpFound = true
+	HowMuchNPCText1.Text = tostring(NpcsFound)
+	boolVal.Text = tostring(found)
 end)
